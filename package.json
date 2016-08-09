@@ -1,0 +1,25 @@
+{
+  "name": "make-facebook-great-again",
+  "version": "0.0.1",
+  "description": "Chrome extension to remove all politics posts from facebook and replace them with beer",
+  "main": "popup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "beer",
+    "politics",
+    "facebook",
+    "chrome",
+    "plugin",
+    "trump",
+    "clinton"
+  ],
+  "author": "Kaplan Komputing, LLC",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
+  }
+}
