@@ -1,6 +1,6 @@
 let elems = [];
 
-const keywords = ['donald','trump','hillary','clinton','democrat','republican','president','gary','johnson','jill','stein'];
+const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president','gary','johnson','jill','stein'];
 
 window.onload = function() {
     getNewsFeed();
@@ -12,40 +12,73 @@ window.onscroll = function() {
 let element_count = 0;
 
 function getNewsFeed() {
-    let user_posts = document.querySelectorAll('[data-testid="fbfeed_story"]');
-    console.log(user_posts.length);
-    // let user_posts = document.getElementsByClassName("userContentWrapper");
-    //If the user loaded more stories
-    if (user_posts.length !== element_count) {
-        //Update element_count to number of posts on page
-
-        if (element_count===0) {
-            elems = user_posts;
-            element_count = user_posts.length;
-            changeStoryText(elems);
-            return;
-        }
-        // else {
-        //     element_count = user_posts.length;
-        // }
-        console.log(element_count + " " + user_posts.length);
-        //Loop through new stories and add them to elems
-        for (let i=element_count;i<user_posts.length;i++) {
-            // elems.push(user_posts[i]);
-            elems[i] = user_posts[i];
-            element_count++;
-        }
-        console.log(elems);
-        changeStoryText(elems);
+    let user_posts = document.querySelectorAll('[data-testid="fbfeed_story"]:not([data-mfga="true"])');
+    //Wait for story to load
+    setTimeout(function() {
+        markedAsChecked(user_posts);
+    },500);
+}
+function markedAsChecked(elems) {
+    //If no new elements, dont do anything
+    if (!elems) {
         return;
     }
+    for (let i=0;i<elems.length;i++) {
+        let story_text = elems[i].innerText.toLowerCase();
+        let match = false;
+        //Now search story_text against politics keywords
+        for (let j=0;j<keywords.length;j++) {
+            if (story_text.indexOf(keywords[j]) > -1) {
+                match = true;
+                console.log("HERE");
+                console.log(story_text);
+                console.log(keywords[j]);
+                //Change the text of this post because it containts a keyword
+                // changeStoryText(elems[i]);
+                changeWholeDiv(elems[i]);
+                elems[i].setAttribute('data-mfga','true');
+                return;
+            }
+        }
+        //Element did not contain a keyword. Mark as searched
+        elems[i].setAttribute('data-mfga','true');
+        return;
+    }
+
 }
-function changeStoryText(nodes) {
-  for (let i=0;i<nodes.length;i++) {
-    nodes[i].childNodes[0].innerText = "DONALD TRUMP SUCKS!";
-  }
+
+function changeWholeDiv(elem) {
+    elem.innerHTML = `
+        <style>
+        #container {
+          background-color:#fff;
+          padding-left:10px;
+          padding-top:2px;
+          margin-bottom:10px;
+        }
+        .image-container {
+            position:relative;
+            overflow:hidden;
+            width:476px;
+            height:auto;
+        }
+        .scaled-image {
+            height:auto;
+            width:100%;
+        }
+        .story-text {
+            font-size:16px;
+            color:red;
+        }
+        </style>
+
+        <div id="container">
+            <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Great Again blocked this post about politics.</p>
+            <div class="image-container">
+                <img
+                    src="http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png"
+                    class="scaled-image"
+                />
+            </div>
+        </div>`;
 }
-// window.setTimeout(function() {
-//
-//     // chrome.runtime.sendMessage({links: document.getElementsByTagName("a")});
-// }, 5000);
