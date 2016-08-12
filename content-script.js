@@ -1,7 +1,19 @@
 let elems = [];
 
 const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president','gary','johnson','jill','stein'];
-
+const images = [
+  "http://2.bp.blogspot.com/-hz7uWhSfa2o/Vb2RvVle_PI/AAAAAAAABoE/OJWWVX0B14g/s1600/We%2BSampled%2B10%2BDifferent%2BImported%2BBeers%2Band%2BHere%2BAre%2BOur%2BFavorites%2B-%2BBlue%2BMoon%2BBeer.jpg",
+  "http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png",
+  "http://www.anderooney.com/wp-content/uploads/2015/11/CoorsLightCan.jpg",
+  "https://molloys.ie/media/catalog/product/cache/1/image/1200x1200/9df78eab33525d08d6e5fb8d27136e95/c/o/corona_extra_330ml_large.png",
+  "http://www.wired.com/wp-content/uploads/2015/12/bud-light-1200x601.jpg",
+  "http://a57.foxnews.com/global.fncstatic.com/static/managed/img/876/493/ewrweewr35434554343.jpg?ve=1&tl=1",
+  "http://www.sweetwater420fest.com/wp-content/uploads/sweetwater-cans-768x496.jpg",
+  "https://s-media-cache-ak0.pinimg.com/564x/d7/d4/70/d7d47027d75dbf36ba4dc7c7d8cd2171.jpg",
+  "https://beermasters.files.wordpress.com/2014/04/20120404_c3390_photo_en_11974.jpg",
+  "http://vignette4.wikia.nocookie.net/beer/images/2/20/Sam.jpg/revision/latest?cb=20130812031000",
+  "https://www.owliquors.com/image/cache/data/beer/shock-top/shock-top-belgian-white-bottle-500x500.jpg"
+];
 window.onload = function() {
     getNewsFeed();
 }
@@ -76,9 +88,15 @@ function changeWholeDiv(elem) {
             <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Great Again blocked this post about politics.</p>
             <div class="image-container">
                 <img
-                    src="http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png"
+                    src="${randomImage()}"
                     class="scaled-image"
                 />
             </div>
         </div>`;
+}
+
+function randomImage() {
+  const random = Math.floor(Math.random() * images.length);
+  return images[10];
+  // return images[random];
 }
