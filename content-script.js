@@ -1,6 +1,6 @@
 let elems = [];
 
-const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president'];
+const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president','bernie','GOP','liberal','obama'];
 const images = [
   "http://2.bp.blogspot.com/-hz7uWhSfa2o/Vb2RvVle_PI/AAAAAAAABoE/OJWWVX0B14g/s1600/We%2BSampled%2B10%2BDifferent%2BImported%2BBeers%2Band%2BHere%2BAre%2BOur%2BFavorites%2B-%2BBlue%2BMoon%2BBeer.jpg",
   "http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png",
@@ -45,6 +45,9 @@ function markedAsChecked(elems) {
                 console.log("HERE");
                 console.log(story_text);
                 console.log(keywords[j]);
+                elems[i].setAttribute('data-count',i);
+                //Save the original HTML
+                elems[i].setAttribute('data-original',elems[i].innerHTML);
                 //Change the text of this post because it containts a keyword
                 // changeStoryText(elems[i]);
                 changeWholeDiv(elems[i]);
@@ -82,10 +85,17 @@ function changeWholeDiv(elem) {
             font-size:16px;
             color:red;
         }
+        #action-button {
+          text-align:right;
+        }
         </style>
 
         <div id="container">
+            <div id="action-button">
+                <button>Show Original Post</button>
+            </div>
             <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Great Again blocked this post about politics.</p>
+
             <div class="image-container">
                 <img
                     src="${randomImage()}"
@@ -98,4 +108,8 @@ function changeWholeDiv(elem) {
 function randomImage() {
   const random = Math.floor(Math.random() * images.length);
   return images[random];
+}
+//Reverts post back to original text
+function revertPost(count) {
+    document.querySelectorAll('[data-testid="fbfeed_story"]')[0].innerHTML = document.querySelectorAll('[data-testid="fbfeed_story"]')[0].dataset.original;
 }
