@@ -1,6 +1,6 @@
 let elems = [];
 
-const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president','gary','johnson','jill','stein'];
+const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president'];
 const images = [
   "http://2.bp.blogspot.com/-hz7uWhSfa2o/Vb2RvVle_PI/AAAAAAAABoE/OJWWVX0B14g/s1600/We%2BSampled%2B10%2BDifferent%2BImported%2BBeers%2Band%2BHere%2BAre%2BOur%2BFavorites%2B-%2BBlue%2BMoon%2BBeer.jpg",
   "http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png",
@@ -97,6 +97,5 @@ function changeWholeDiv(elem) {
 
 function randomImage() {
   const random = Math.floor(Math.random() * images.length);
-  return images[10];
-  // return images[random];
+  return images[random];
 }
