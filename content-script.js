@@ -1,6 +1,6 @@
 let elems = [];
 
-const keywords = ['tax','donald','trump','hillary','clinton','democrat','republican','president','bernie','GOP','liberal','obama'];
+const keywords = ['i','tax','donald','trump','hillary','clinton','democrat','republican','president','bernie','GOP','liberal','obama'];
 const images = [
   "http://2.bp.blogspot.com/-hz7uWhSfa2o/Vb2RvVle_PI/AAAAAAAABoE/OJWWVX0B14g/s1600/We%2BSampled%2B10%2BDifferent%2BImported%2BBeers%2Band%2BHere%2BAre%2BOur%2BFavorites%2B-%2BBlue%2BMoon%2BBeer.jpg",
   "http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png",
@@ -11,7 +11,6 @@ const images = [
   "http://www.sweetwater420fest.com/wp-content/uploads/sweetwater-cans-768x496.jpg",
   "https://s-media-cache-ak0.pinimg.com/564x/d7/d4/70/d7d47027d75dbf36ba4dc7c7d8cd2171.jpg",
   "https://beermasters.files.wordpress.com/2014/04/20120404_c3390_photo_en_11974.jpg",
-  "http://vignette4.wikia.nocookie.net/beer/images/2/20/Sam.jpg/revision/latest?cb=20130812031000",
   "https://www.owliquors.com/image/cache/data/beer/shock-top/shock-top-belgian-white-bottle-500x500.jpg"
 ];
 window.onload = function() {
@@ -45,12 +44,12 @@ function markedAsChecked(elems) {
                 console.log("HERE");
                 console.log(story_text);
                 console.log(keywords[j]);
-                elems[i].setAttribute('data-count',i);
+                elems[i].setAttribute('data-count',document.querySelectorAll('.container').length);
                 //Save the original HTML
                 elems[i].setAttribute('data-original',elems[i].innerHTML);
                 //Change the text of this post because it containts a keyword
                 // changeStoryText(elems[i]);
-                changeWholeDiv(elems[i]);
+                changeWholeDiv(elems[i],document.querySelectorAll('.container').length);
                 elems[i].setAttribute('data-mfga','true');
                 return;
             }
@@ -59,13 +58,19 @@ function markedAsChecked(elems) {
         elems[i].setAttribute('data-mfga','true');
         return;
     }
-
 }
-
-function changeWholeDiv(elem) {
+//Toggles text to either original or beer post
+function toggleText(count) {
+    console.log("HI");
+    // document.querySelectorAll('.container')[count].innerHTML = document.querySelector(`[data-count="${count}"]`).dataset.original;
+}
+//<button onclick="document.querySelectorAll('.container')[0].innerHTML = document.querySelector([data-count="${count}"]).dataset.original">Show Original Post</button>
+function changeWholeDiv(elem,count) {
+  const selector = `[data-count='${String(count)}']`;
+  console.log(document.querySelectorAll(selector));
     elem.innerHTML = `
         <style>
-        #container {
+        .container {
           background-color:#fff;
           padding-left:10px;
           padding-top:2px;
@@ -85,14 +90,14 @@ function changeWholeDiv(elem) {
             font-size:16px;
             color:red;
         }
-        #action-button {
+        .action-button {
           text-align:right;
         }
         </style>
 
-        <div id="container">
-            <div id="action-button">
-                <button>Show Original Post</button>
+        <div class="container">
+            <div class="action-button">
+                <button onclick="document.querySelectorAll('.container')[0].innerHTML =document.querySelector(&quot;${selector}&quot;).dataset.original">Show Original Post</button>
             </div>
             <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Great Again blocked this post about politics.</p>
 
@@ -109,7 +114,5 @@ function randomImage() {
   const random = Math.floor(Math.random() * images.length);
   return images[random];
 }
-//Reverts post back to original text
-function revertPost(count) {
-    document.querySelectorAll('[data-testid="fbfeed_story"]')[0].innerHTML = document.querySelectorAll('[data-testid="fbfeed_story"]')[0].dataset.original;
-}
+
+toggleText();
