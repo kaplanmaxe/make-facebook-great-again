@@ -1,6 +1,6 @@
 let elems = [];
 
-const keywords = ['i','tax','donald','trump','hillary','clinton','democrat','republican','president','bernie','GOP','liberal','obama'];
+const keywords = ['usa','tax','donald','trump','hillary','clinton','democrat','republican','president','bernie','GOP','liberal','obama'];
 const images = [
   "http://2.bp.blogspot.com/-hz7uWhSfa2o/Vb2RvVle_PI/AAAAAAAABoE/OJWWVX0B14g/s1600/We%2BSampled%2B10%2BDifferent%2BImported%2BBeers%2Band%2BHere%2BAre%2BOur%2BFavorites%2B-%2BBlue%2BMoon%2BBeer.jpg",
   "http://www.budweiser.com/en/home/_jcr_content/contentPar/grid_0/g31/embedvideo.img.png/1720-BudUS-JKRAmeriCan-Resize-800x500.png",
@@ -23,7 +23,7 @@ window.onscroll = function() {
 let element_count = 0;
 
 function getNewsFeed() {
-    let user_posts = document.querySelectorAll('[data-testid="fbfeed_story"]:not([data-mfga="true"])');
+    let user_posts = document.querySelectorAll('[data-testid="fbfeed_story"]:not([data-mfda="true"])');
     //Wait for story to load
     setTimeout(function() {
         markedAsChecked(user_posts);
@@ -44,18 +44,18 @@ function markedAsChecked(elems) {
                 console.log("HERE");
                 console.log(story_text);
                 console.log(keywords[j]);
+                //Set count of changed fb post
                 elems[i].setAttribute('data-count',document.querySelectorAll('.container').length);
                 //Save the original HTML
                 elems[i].setAttribute('data-original',elems[i].innerHTML);
                 //Change the text of this post because it containts a keyword
-                // changeStoryText(elems[i]);
                 changeWholeDiv(elems[i],document.querySelectorAll('.container').length);
-                elems[i].setAttribute('data-mfga','true');
+                elems[i].setAttribute('data-mfda','true');
                 return;
             }
         }
         //Element did not contain a keyword. Mark as searched
-        elems[i].setAttribute('data-mfga','true');
+        elems[i].setAttribute('data-mfda','true');
         return;
     }
 }
@@ -66,9 +66,8 @@ function toggleText(count) {
 }
 //<button onclick="document.querySelectorAll('.container')[0].innerHTML = document.querySelector([data-count="${count}"]).dataset.original">Show Original Post</button>
 function changeWholeDiv(elem,count) {
-  const selector = `[data-count='${String(count)}']`;
-  console.log(document.querySelectorAll(selector));
-    elem.innerHTML = `
+    const selector = `[data-count='${String(count)}']`;
+    const beer_html = `
         <style>
         .container {
           background-color:#fff;
@@ -97,7 +96,7 @@ function changeWholeDiv(elem,count) {
 
         <div class="container">
             <div class="action-button">
-                <button onclick="document.querySelectorAll('.container')[0].innerHTML =document.querySelector(&quot;${selector}&quot;).dataset.original">Show Original Post</button>
+                <button id='button${count}'>Show Original Post</button>
             </div>
             <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Great Again blocked this post about politics.</p>
 
@@ -108,6 +107,30 @@ function changeWholeDiv(elem,count) {
                 />
             </div>
         </div>`;
+
+    elem.innerHTML = beer_html;
+    //Set data-showing to beer because it is showing the beer post
+    elem.setAttribute('data-showing','beer');
+    //Add event listener for each button. Cannot use onclick because cannot
+    //access functions inside chrome extensions
+    const button = document.getElementById(`button${count}`);
+    console.log(button);
+    button.addEventListener("click", function() {
+      console.log("HERE");
+      const container = document.querySelectorAll('.container')[count];
+      //If it is showing beer, we need to show original text
+      if (elem.dataset.showing === "beer") {
+        const button_row = `<div class="action-button">
+            <button id='button${count}'>Cover this with beer</button>
+        </div>`;    
+        container.innerHTML = `${button_row}${document.querySelector(selector).dataset.original}`;
+      }
+      //If it is showing original, we need to show beer
+      else {
+        container.innerHTML = beer_html;
+      }
+
+    });
 }
 
 function randomImage() {
