@@ -36,20 +36,20 @@ function markedAsChecked(elems) {
     }
     for (let i=0;i<elems.length;i++) {
         let story_text = elems[i].innerText.toLowerCase();
-        let match = false;
         //Now search story_text against politics keywords
         for (let j=0;j<keywords.length;j++) {
             if (story_text.indexOf(keywords[j]) > -1) {
-                match = true;
-                console.log("HERE");
                 console.log(story_text);
                 console.log(keywords[j]);
+                //The order of the changed facebook post
+                const count = document.querySelectorAll('.container').length;
                 //Set count of changed fb post
-                elems[i].setAttribute('data-count',document.querySelectorAll('.container').length);
-                //Save the original HTML
+                elems[i].setAttribute('data-count',count);
+                //Save the original HTML with button
                 elems[i].setAttribute('data-original',elems[i].innerHTML);
                 //Change the text of this post because it containts a keyword
-                changeWholeDiv(elems[i],document.querySelectorAll('.container').length);
+                changeWholeDiv(elems[i],count);
+                //Mark as searched
                 elems[i].setAttribute('data-mfda','true');
                 return;
             }
@@ -59,14 +59,8 @@ function markedAsChecked(elems) {
         return;
     }
 }
-//Toggles text to either original or beer post
-function toggleText(count) {
-    console.log("HI");
-    // document.querySelectorAll('.container')[count].innerHTML = document.querySelector(`[data-count="${count}"]`).dataset.original;
-}
-//<button onclick="document.querySelectorAll('.container')[0].innerHTML = document.querySelector([data-count="${count}"]).dataset.original">Show Original Post</button>
+//Changes div text to beer post
 function changeWholeDiv(elem,count) {
-    const selector = `[data-count='${String(count)}']`;
     const beer_html = `
         <style>
         .container {
@@ -115,27 +109,29 @@ function changeWholeDiv(elem,count) {
     //access functions inside chrome extensions
     const button = document.getElementById(`button${count}`);
     console.log(button);
-    button.addEventListener("click", function() {
-      console.log("HERE");
-      const container = document.querySelectorAll('.container')[count];
-      //If it is showing beer, we need to show original text
-      if (elem.dataset.showing === "beer") {
-        const button_row = `<div class="action-button">
-            <button id='button${count}'>Cover this with beer</button>
-        </div>`;    
-        container.innerHTML = `${button_row}${document.querySelector(selector).dataset.original}`;
-      }
-      //If it is showing original, we need to show beer
-      else {
-        container.innerHTML = beer_html;
-      }
-
-    });
+    addButtonListener(button,elem,count);
+    return;
 }
 
+//Adds listener to button to either set back to original or beer post
+function addButtonListener(button,container,count) {
+    console.log("HERE");
+    button.addEventListener("click", function() {
+        if (container.dataset.showing === "beer") {
+            const button_row = `<div class="action-button">
+                <button id='button-revert${count}'>Cover this with beer</button>
+            </div>`;
+            container.innerHTML = button_row + container.dataset.original;
+            //Have to add button listener here for this button
+            container.setAttribute('data-showing','original');
+        }
+        else {
+            container.innerHTML = beer_html;
+        }
+    });
+}
+//Returns random image of beer
 function randomImage() {
   const random = Math.floor(Math.random() * images.length);
   return images[random];
 }
-
-toggleText();
