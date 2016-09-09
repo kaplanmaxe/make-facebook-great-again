@@ -120,7 +120,7 @@ function generateBeerHtml(count) {
             <div class="action-button">
                 <button id='button${count}'>Show Original Post</button>
             </div>
-            <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Great Again blocked this post about politics.</p>
+            <p class="story-text">Politics is BORING! Beer is not. No worries, Make Facebook Drunk Again blocked this post about politics.</p>
 
             <div class="image-container">
                 <img
